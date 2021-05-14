@@ -10,7 +10,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
-
 public class BasedSMP extends JavaPlugin {
     private Server mc = Bukkit.getServer();
     private Logger log = this.getLogger();
@@ -21,14 +20,12 @@ public class BasedSMP extends JavaPlugin {
         Reflections reflections = new Reflections("based.basedsmp.events");
 
         for (Class <? extends Listener> event : reflections.getSubTypesOf(Listener.class)) {
-            try {
-				pm.registerEvents(event.getDeclaredConstructor().newInstance(), this);
-	            log.info("Registered " + event.getSimpleName());
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
-			}
+        	try {
+        		pm.registerEvents(event.getDeclaredConstructor().newInstance(), this);
+        		log.info("Registered " + event.getSimpleName());
+        	} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+        		e.printStackTrace();
+        	}
         }
-    }
-
+       }
 }
