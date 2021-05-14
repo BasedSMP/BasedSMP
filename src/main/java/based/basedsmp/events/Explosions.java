@@ -27,18 +27,16 @@ public class Explosions implements Listener {
          */
     }
     
-    @EventHandler(ignoreCancelled = true)
-    public void creeperBlowUp(EntityExplodeEvent event) {
-    	if(event.getEntityType() == EntityType.CREEPER) {
-    		event.blockList().iterator().forEachRemaining(Block::breakNaturally);
-    		event.blockList().clear();
-    	}
-    }
     
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void crystalBlowUp(EntityExplodeEvent event) {
 		if(event.getEntityType() == EntityType.ENDER_CRYSTAL) {
 			event.blockList().clear();
 		}
+		
+    	if(event.getEntityType() == EntityType.CREEPER) {
+    		event.blockList().iterator().forEachRemaining(Block::breakNaturally);
+    		event.blockList().clear();
+    	}
 	}
 }
