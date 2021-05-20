@@ -1,9 +1,6 @@
 package based.basedsmp.events;
 
-import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,32 +8,14 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class Explosions implements Listener {
-	private Logger log = Bukkit.getServer().getLogger();
-
     @EventHandler
-    public void anchorBlowUp(BlockExplodeEvent event) {
-        event.blockList().clear();
-        log.info(event.getBlock().getType().toString());
-        
-        /*
-         * This does blocks ALL block explode events
-         * including beds.
-         * This has to be fixed at some point, but
-         * currently event.getBlock()
-         * doesn't give the right block.
-         */
+    public void anchorExplode(BlockExplodeEvent event) {
+        if(event.getBlock().getWorld().getEnvironment() == Environment.NORMAL) event.blockList().clear();
     }
     
-    
 	@EventHandler(ignoreCancelled = true)
-	public void crystalBlowUp(EntityExplodeEvent event) {
-		if(event.getEntityType() == EntityType.ENDER_CRYSTAL) {
-			event.blockList().clear();
-		}
-		
-    	if(event.getEntityType() == EntityType.CREEPER) {
-    		event.blockList().iterator().forEachRemaining(Block::breakNaturally);
-    		event.blockList().clear();
-    	}
+	public void entityExplode(EntityExplodeEvent event) {
+		if(event.getEntityType() == EntityType.ENDER_CRYSTAL) event.setYield(0);
+    	if(event.getEntityType() == EntityType.CREEPER) event.setYield(1);
 	}
 }
